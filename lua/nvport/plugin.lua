@@ -65,7 +65,7 @@ M.nvport_core = {
                 },
                 opts = {},
             },
-        }, require("portrc").sources.cmp.dependencies),
+        }, require("nvconf").sources.cmp.dependencies),
         opts = function()
             -- Extend Neovim's client capabilities with the completion ones
             vim.lsp.config("*", {
