@@ -209,7 +209,7 @@ M.lsp = function()
     -- Define the diagnostic signs.
     -- See :help vim.diagnostic.Opts for more details
     -- source: https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/lsp.lua#L146
-    local dicons = require("icon").diagnostics
+    local dicons = require("nvport.icon").diagnostics
     for severity, icon in pairs(dicons) do
         local hl = "DiagnosticSign" .. severity:sub(1, 1) .. severity:sub(2):lower()
         vim.fn.sign_define(hl, { text = icon, texthl = hl })
