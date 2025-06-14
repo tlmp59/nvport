@@ -10,7 +10,7 @@ return {
         "printf",
         "vim",
         "vimdoc",
-    }, require("portrc").sources.trs),
+    }, require("nvconf").sources.trs),
 
     highlight = {
         enable = true,
