@@ -36,5 +36,5 @@ return {
 
         -- For filetypes without a formatter
         ["_"] = { "trim_whitespace", "trim_newlines" },
-    }, require("nvconf").sources.fmt),
+    }, require("portrc").sources.fmt),
 }

@@ -46,12 +46,12 @@ return {
                 module = "lazydev.integrations.blink",
                 score_offset = 100,
             },
-        }, require("nvconf").sources.cmp.providers),
+        }, require("portrc").sources.cmp.providers),
 
         per_filetype = vim.tbl_deep_extend("force", {
             lua = { inherit_defaults = true, "lazydev" },
             markdown = { inherit_defaults = true, "latex" },
-        }, require("nvconf").sources.cmp.per_filetype),
+        }, require("portrc").sources.cmp.per_filetype),
     },
 
     snippets = { preset = "luasnip" },
