@@ -1,15 +1,5 @@
 local M = {}
 
-M.base46 = {
-    theme = "onedark",
-    hl_add = {},
-    hl_override = {},
-    integrations = {},
-    changed_themes = {},
-    transparency = false,
-    theme_toggle = { "onedark", "one_light" },
-}
-
 M.sources = {
     trs = {},
     fmt = {},
@@ -19,6 +9,7 @@ M.sources = {
         per_filetype = {},
     },
     dap = {},
+    lnt = {},
 }
 
 local ok, portrc = pcall(require, "portrc")

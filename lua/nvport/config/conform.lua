@@ -13,5 +13,28 @@ return {
         end
     end,
 
-    formatters_by_ft = require("nvconf").sources.fmt,
+    formatters = {
+        dprint = {
+            command = "dprint",
+            args = {
+                "fmt",
+                "--stdin",
+                "$FILENAME",
+                "--config",
+                vim.api.nvim_get_runtime_file(".dprint.jsonc", true)[1],
+            },
+            stdin = true,
+        },
+    },
+
+    formatters_by_ft = vim.tbl_deep_extend("force", {
+        -- NvPort default formatters
+        lua = { "stylua" },
+        nix = { "alejandra" },
+        python = { "dprint", "isort", "black", stop_after_first = true },
+        markdown = { "dprint" },
+
+        -- For filetypes without a formatter
+        ["_"] = { "trim_whitespace", "trim_newlines" },
+    }, require("nvconf").sources.fmt),
 }

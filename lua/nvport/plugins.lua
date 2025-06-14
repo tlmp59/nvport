@@ -24,6 +24,16 @@ M.nvchad_ui = {
 }
 
 M.nvport_core = {
+    { -- Support Neovim APIs
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+            library = {
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
+        },
+    },
+
     { -- Syntax highlighting and text objects
         "nvim-treesitter/nvim-treesitter",
         version = false,
@@ -57,12 +67,15 @@ M.nvport_core = {
             },
         }, require("nvconf").sources.cmp.dependencies),
         opts = function()
-            -- Extend neovim's client capabilities with the completion ones
+            -- Extend Neovim's client capabilities with the completion ones
             vim.lsp.config("*", {
                 capabilities = require("blink-cmp").get_lsp_capabilities(nil, true),
             })
             return require "nvport.config.blink"
         end,
+    },
+
+    { -- Copilot integration
     },
 
     { -- File formatting
@@ -75,6 +88,12 @@ M.nvport_core = {
         opts = function()
             return require "nvport.config.conform"
         end,
+    },
+
+    { -- File linting
+    },
+
+    { -- Debugger
     },
 }
 
@@ -104,7 +123,7 @@ M.nvport_addon = {
 
     {
         "mikavilpas/yazi.nvim",
-        event = "VeryLazy",
+        event = "VimEnter",
         dependencies = { "folke/snacks.nvim", "nvim-lua/plenary.nvim" },
         keys = {
             { "-", mode = { "n", "v" }, "<cmd>Yazi<cr>", desc = "Open yazi at the current file" },
@@ -134,6 +153,92 @@ M.nvport_addon = {
             { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yanky yank" },
         },
     },
+
+    {
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        opts = require("nvport.config.snacks").setup,
+        keys = require("nvport.config.snacks").keys,
+    },
+
+    {
+        "echasnovski/mini.clue",
+        version = false,
+        event = "VeryLazy",
+        opts = function()
+            return require "nvport.config.miniclue"
+        end,
+    },
+
+    {
+        "echasnovski/mini.pairs",
+        version = false,
+        event = "InsertEnter",
+        opts = {},
+    },
+
+    {
+        "echasnovski/mini.ai",
+        version = false,
+        event = { "BufReadPost", "BufNewFile" },
+        dependencies = "nvim-treesitter/nvim-treesitter-textobjects",
+        opts = function()
+            local miniai = require "mini.ai"
+
+            return {
+                n_lines = 300,
+                custom_textobjects = {
+                    f = miniai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+                    g = function()
+                        local from = { line = 1, col = 1 }
+                        local to = {
+                            line = vim.fn.line "$",
+                            col = math.max(vim.fn.getline("$"):len(), 1),
+                        }
+                        return { from = from, to = to }
+                    end,
+                },
+                silent = true,
+                search_method = "cover",
+                mappings = {
+                    around_next = "",
+                    inside_next = "",
+                    around_last = "",
+                    inside_last = "",
+                },
+            }
+        end,
+    },
+
+    {
+        "echasnovski/mini.hipatterns",
+        version = false,
+        event = { "BufReadPost", "BufNewFile" },
+        opts = function()
+            local hipatterns = require "mini.hipatterns"
+            return {
+                highlighters = {
+                    hex_color = hipatterns.gen_highlighter.hex_color(),
+                },
+            }
+        end,
+    },
+
+    {
+        "echasnovski/mini.surround",
+        version = false,
+        opts = {},
+    },
+
+    {
+        "nmac427/guess-indent.nvim",
+        event = { "BufReadPost", "BufNewFile" },
+        opts = {},
+    },
+
+    -- TODO: add only plugins that i found should be standard on neovim
+    {},
 }
 
 local nvtbl = {}
