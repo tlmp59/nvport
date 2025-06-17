@@ -1,5 +1,3 @@
-dofile(vim.g.base46_cache .. "blink")
-
 return {
     cmdline = { enabled = false },
     keymap = {
@@ -12,7 +10,7 @@ return {
         ["<C-d>"] = { "scroll_documentation_down", "fallback" },
     },
     appearance = {
-        kind_icons = require("icon").symbol_kinds,
+        -- kind_icons = require("nvport.icon").symbol_kinds,
         nerd_font_variant = "mono",
     },
     completion = {
@@ -38,7 +36,7 @@ return {
         ghost_text = { enabled = true },
     },
     sources = {
-        default = { "lsp", "path", "snippets", "buffers" },
+        default = { "lsp", "path", "snippets" },
 
         providers = vim.tbl_deep_extend("force", {
             lazydev = {
@@ -46,12 +44,12 @@ return {
                 module = "lazydev.integrations.blink",
                 score_offset = 100,
             },
-        }, require("nvconf").sources.cmp.providers),
+        }, require("portal").sources.blink.providers),
 
         per_filetype = vim.tbl_deep_extend("force", {
             lua = { inherit_defaults = true, "lazydev" },
             markdown = { inherit_defaults = true, "latex" },
-        }, require("nvconf").sources.cmp.per_filetype),
+        }, require("portal").sources.blink.per_filetype),
     },
 
     snippets = { preset = "luasnip" },

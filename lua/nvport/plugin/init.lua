@@ -1,29 +1,10 @@
 local M = {}
+local cpath = "nvport.plugin.config."
 
-M.nvchad_ui = {
+M.lib = {
     "nvim-lua/plenary.nvim",
-
-    {
-        "nvchad/base46",
-        build = function()
-            require("base46").load_all_highlights()
-        end,
-    },
-
-    {
-        "nvchad/ui",
-        lazy = false,
-        config = function()
-            require "nvchad"
-        end,
-    },
-
     "nvzone/volt",
-    "nvzone/menu",
-    { "nvzone/minty", cmd = { "Huefy", "Shades" } },
-}
 
-M.nvport_core = {
     { -- Support Neovim APIs
         "folke/lazydev.nvim",
         ft = "lua",
@@ -33,13 +14,15 @@ M.nvport_core = {
             },
         },
     },
+}
 
+M.core = {
     { -- Syntax highlighting and text objects
         "nvim-treesitter/nvim-treesitter",
         version = false,
         build = ":TSUpdate",
         opts = function()
-            return require "nvport.config.treesitter"
+            return require(cpath .. "treesitter")
         end,
     },
 
@@ -65,13 +48,13 @@ M.nvport_core = {
                 },
                 opts = {},
             },
-        }, require("nvconf").sources.cmp.dependencies),
+        }, require("portal").sources.blink.dependencies),
         opts = function()
             -- Extend Neovim's client capabilities with the completion ones
             vim.lsp.config("*", {
                 capabilities = require("blink-cmp").get_lsp_capabilities(nil, true),
             })
-            return require "nvport.config.blink"
+            return require(cpath .. "blink")
         end,
     },
 
@@ -86,7 +69,7 @@ M.nvport_core = {
             vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
         end,
         opts = function()
-            return require "nvport.config.conform"
+            return require(cpath .. "conform")
         end,
     },
 
@@ -97,7 +80,7 @@ M.nvport_core = {
     },
 }
 
-M.nvport_addon = {
+M.addon = {
     {
         "MagicDuck/grug-far.nvim",
         opts = { headerMaxWidth = 80 },
@@ -158,8 +141,8 @@ M.nvport_addon = {
         "folke/snacks.nvim",
         priority = 1000,
         lazy = false,
-        opts = require("nvport.config.snacks").setup,
-        keys = require("nvport.config.snacks").keys,
+        opts = require(cpath .. "snacks").setup,
+        keys = require(cpath .. "snacks").keys,
     },
 
     {
@@ -167,7 +150,7 @@ M.nvport_addon = {
         version = false,
         event = "VeryLazy",
         opts = function()
-            return require "nvport.config.miniclue"
+            return require(cpath .. "miniclue")
         end,
     },
 
@@ -241,9 +224,10 @@ M.nvport_addon = {
     {},
 }
 
-local nvtbl = {}
-for _, v in pairs(M) do
-    table.insert(nvtbl, v)
-end
+local plugins = vim.iter(M)
+    :map(function(_, v)
+        return v
+    end)
+    :totable()
 
-return nvtbl
+return plugins

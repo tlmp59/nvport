@@ -28,7 +28,6 @@ return {
     },
 
     formatters_by_ft = vim.tbl_deep_extend("force", {
-        -- NvPort default formatters
         lua = { "stylua" },
         nix = { "alejandra" },
         python = { "dprint", "isort", "black", stop_after_first = true },
@@ -36,5 +35,5 @@ return {
 
         -- For filetypes without a formatter
         ["_"] = { "trim_whitespace", "trim_newlines" },
-    }, require("nvconf").sources.fmt),
+    }, require("portal").sources.conform),
 }

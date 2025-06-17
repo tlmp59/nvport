@@ -1,8 +1,3 @@
-pcall(function()
-    dofile(vim.g.base46_cache .. "syntax")
-    dofile(vim.g.base46_cache .. "treesitter")
-end)
-
 return {
     ensure_installed = vim.tbl_extend("force", {
         "lua",
@@ -10,7 +5,7 @@ return {
         "printf",
         "vim",
         "vimdoc",
-    }, require("nvconf").sources.trs),
+    }, require("portal").sources.parser),
 
     highlight = {
         enable = true,
