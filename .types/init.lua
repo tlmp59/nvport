@@ -1,0 +1,1 @@
+-- TODO: check on nvchad theme generating function and write your own

@@ -1,7 +1,12 @@
 local M = {}
-local cpath = "nvport.plugin.config."
+local cpath = "nvport.config."
 
-M.lib = {
+M.setup = function()
+    require "lsp"
+end
+
+M.plugin = {
+
     "nvim-lua/plenary.nvim",
     "nvzone/volt",
 
@@ -14,9 +19,7 @@ M.lib = {
             },
         },
     },
-}
 
-M.core = {
     { -- Syntax highlighting and text objects
         "nvim-treesitter/nvim-treesitter",
         version = false,
@@ -78,9 +81,7 @@ M.core = {
 
     { -- Debugger
     },
-}
 
-M.addon = {
     {
         "MagicDuck/grug-far.nvim",
         opts = { headerMaxWidth = 80 },
@@ -224,10 +225,4 @@ M.addon = {
     {},
 }
 
-local plugins = vim.iter(M)
-    :map(function(_, v)
-        return v
-    end)
-    :totable()
-
-return plugins
+return M

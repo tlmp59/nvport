@@ -47,8 +47,7 @@ local on_attach = function(client, bufnr)
         })
     end
 
-    -- Features: Adding inlay-hints command if supported
-    -- (remember to enable feature in server config)
+    -- Features: Adding inlay-hints command if supported (remember to enable feature in server config)
     -- source: https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/commands.lua#L6C1-L12C49
     if client:supports_method(methods.textDocument_inlayHint, bufnr) then
         vim.api.nvim_create_user_command("ToggleInlayHints", function()
@@ -119,7 +118,9 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
     callback = function()
         vim.iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true)):map(function(file)
             local server = vim.fn.fnamemodify(file, ":t:r")
-            vim.lsp.enable(server)
+            if server ~= "init" then
+                vim.lsp.enable(server)
+            end
         end)
     end,
 })

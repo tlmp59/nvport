@@ -23,5 +23,5 @@ M.sources = {
     linter = {},
 }
 
-local ok, portal = pcall(require, "portal")
-return vim.tbl_deep_extend("force", M, ok and portal or {})
+local ok, portrc = pcall(require, "portrc")
+return vim.tbl_deep_extend("force", M, ok and portrc or {})
