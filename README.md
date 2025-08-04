@@ -1,8 +1,1 @@
-Add this in flake inputs:
-
-```nix
-inputs.nvport = {
-    url = "github:tlmp59/nvport/main"
-    flake = false;
-}
-```
+TODO: adding introduction to neovim and explain why i use it?
