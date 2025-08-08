@@ -47,6 +47,26 @@ auto('FileType', {
     end,
 })
 
+-- auto('FileType', {
+--     group = augroup 'auto_disable_wrap',
+--     desc = 'Auto disable wrap for every file.',
+--     pattern = '*',
+--     callback = function()
+--         vim.wo.wrap = false
+--         vim.wo.linebreak = false
+--     end,
+-- })
+--
+-- auto('FileType', {
+--     group = augroup 'auto_enable_wrap',
+--     desc = 'Auto enable wrap for certain filetype.',
+--     pattern = { 'markdown' },
+--     callback = function()
+--         vim.wo.wrap = true
+--         vim.wo.linebreak = true
+--     end,
+-- })
+
 -- source: https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/autocmds.lua#L44
 auto('CmdwinEnter', {
     group = augroup 'execute_cmd_and_stay',

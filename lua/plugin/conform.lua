@@ -37,10 +37,12 @@ return {
         formatters_by_ft = {
             lua = { 'stylua' },
             nix = { 'alejandra' },
-            markdown = { 'dprint' },
+            markdown = { 'dprint', lsp_format = 'fallback' },
             python = { 'dprint', 'isort', 'black', stop_after_first = true },
-            html = { 'dprint' },
-            css = { 'dprint' },
+
+            html = { 'dprint', lsp_format = 'fallback' },
+            css = { 'dprint', lsp_format = 'fallback' },
+            javascript = { 'dprint', lsp_format = 'fallback' },
 
             -- For filetypes without a formatter
             ['_'] = { 'trim_whitespace', 'trim_newlines' },

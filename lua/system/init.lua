@@ -39,7 +39,7 @@ M.setup = function(opts)
 
     --- Wrap ---
     opt.wrap = false
-    opt.linebreak = true
+    opt.linebreak = false
     opt.colorcolumn = '80'
 
     --- Slide boundary ---
