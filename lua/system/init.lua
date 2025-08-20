@@ -50,11 +50,6 @@ M.setup = function(opts)
     opt.encoding = 'utf-8'
     opt.fileencoding = 'utf-8'
 
-    --- Timeout ---
-    opt.updatetime = 300
-    opt.timeoutlen = 500
-    opt.ttimeoutlen = 0
-
     --- Split ---
     opt.splitright = true
     opt.splitbelow = true
