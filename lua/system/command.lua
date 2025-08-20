@@ -47,26 +47,6 @@ auto('FileType', {
     end,
 })
 
--- auto('FileType', {
---     group = augroup 'auto_disable_wrap',
---     desc = 'Auto disable wrap for every file.',
---     pattern = '*',
---     callback = function()
---         vim.wo.wrap = false
---         vim.wo.linebreak = false
---     end,
--- })
---
--- auto('FileType', {
---     group = augroup 'auto_enable_wrap',
---     desc = 'Auto enable wrap for certain filetype.',
---     pattern = { 'markdown' },
---     callback = function()
---         vim.wo.wrap = true
---         vim.wo.linebreak = true
---     end,
--- })
-
 -- source: https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/autocmds.lua#L44
 auto('CmdwinEnter', {
     group = augroup 'execute_cmd_and_stay',
@@ -96,17 +76,5 @@ auto('TextYankPost', {
     callback = function()
         -- Setting a priority higher than the LSP references one.
         vim.hl.on_yank { higroup = 'Visual', priority = 250 }
-    end,
-})
-
--- source: https://github.com/tjdevries/config.nvim/blob/master/plugin/terminal.lua
-auto('TermOpen', {
-    group = augroup 'custom-term-open',
-    callback = function()
-        vim.opt_local.number = false
-        vim.opt_local.relativenumber = false
-        vim.opt_local.scrolloff = 0
-
-        vim.bo.filetype = 'terminal'
     end,
 })

@@ -16,7 +16,7 @@ return {
     },
 
     theme = {
-        name = 'eerie',
+        name = 'default',
         transparent = false,
     },
 }

@@ -116,12 +116,10 @@ auto('LspAttach', {
 })
 
 -- Enable support servers in pre-defined server list
-auto({ 'BufReadPre', 'BufNewFile' }, {
-    once = true, -- ensure command runs only once, then automatically removed
-    callback = function()
-        local servers = vim.api.nvim_get_runtime_file('lsp/*.lua', true)
-        vim.iter(servers):map(function(file)
-            vim.lsp.enable(vim.fn.fnamemodify(file, ':t:r'))
-        end)
-    end,
-})
+local servers = vim.iter(vim.api.nvim_get_runtime_file('lsp/*.lua', true))
+    :map(function(file)
+        return vim.fn.fnamemodify(file, ':t:r')
+    end)
+    :totable()
+
+vim.lsp.enable(servers)
