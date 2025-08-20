@@ -1,97 +1,30 @@
-local M = {}
-local opt = vim.opt
-local g = vim.g
-
--- Leader key --
-g.mapleader = ' '
-g.maplocalleader = '//'
-
--- Backup --
-opt.swapfile = false
-opt.backup = false
-opt.undofile = true
-opt.undodir = vim.fn.stdpath 'cache' .. '/undodir'
-opt.confirm = true -- prompt for save
-
--- Search --
-opt.ignorecase = true
-opt.smartcase = true
-opt.incsearch = true
-opt.hlsearch = true
-
--- Indentation --
-opt.tabstop = 4
-opt.shiftwidth = 4
-opt.softtabstop = 4
-opt.expandtab = true
-
-opt.smartindent = true
-opt.autoindent = true
-
--- Slide boundary --
-opt.scrolloff = 8
-opt.sidescrolloff = 8
-
--- Split --
-opt.splitright = true
-opt.splitbelow = true
-
--- Main UI --
-opt.number = true
-opt.relativenumber = true
-opt.colorcolumn = '80'
-
-opt.cursorline = true
-opt.showmode = false
-opt.showtabline = 0
-opt.laststatus = 3
-opt.winborder = 'none' -- default float border
-opt.cmdheight = 1
-
-opt.guicursor = '' -- solid block
-opt.signcolumn = 'yes'
-
-opt.termguicolors = true
-
--- Popup menu --
-opt.completeopt = 'menuone,noselect,noinsert'
-opt.pumheight = 10
-opt.pumblend = 10
-
--- Misc --
-opt.mouse = 'n' -- allow mouse in normal
-opt.lazyredraw = true -- delay redraw during macros
-opt.inccommand = 'split' -- preview substitutions live
-opt.shortmess:append { w = true, s = true }
-
-vim.schedule(function()
-    opt.clipboard = 'unnamedplus'
-end)
-
--- Disable builtin plugins & providers --
-for _, plugin in pairs {
-    'netrw',
-    'netrwPlugin',
-    'netrwSettings',
-    'netrwFileHandlers',
-    'gzip',
-    'zip',
-    'zipPlugin',
-    'tar',
-    'tarPlugin',
-    'getscript',
-    'getscriptPlugin',
-    'vimball',
-    'vimballPlugin',
-    '2html_plugin',
-    'logipat',
-    'rrhelper',
-    'spellfile_plugin',
-    'matchit',
-    'python3_provider',
-    'ruby_provider',
-    'perl_provider',
-    'node_provider',
-} do
-    g['loaded_' .. plugin] = 1
-end
+require('nvport').setup {
+    theme = 'habamax',
+    packs = {
+        'https://github.com/neovim/nvim-lspconfig',
+        'https://github.com/nvim-treesitter/nvim-treesitter',
+        'https://github.com/stevearc/conform.nvim',
+        'https://github.com/ibhagwan/fzf-lua',
+        'https://github.com/nvim-lua/plenary.nvim',
+        'https://github.com/mikavilpas/yazi.nvim',
+        'https://github.com/NMAC427/guess-indent.nvim',
+    },
+    servers = {
+        'lua_ls',
+    },
+    parsers = {
+        'bash',
+        'lua',
+        'luadoc',
+        'printf',
+        'vim',
+        'vimdoc',
+        'nix',
+        'markdown',
+        'markdown_inline',
+        'python',
+        'query',
+        'regex',
+        'json',
+    },
+}
