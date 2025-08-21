@@ -1,16 +1,9 @@
---- User custom command & auto-command ---
+--- User autocommand ---
 local auto = vim.api.nvim_create_autocmd
-local user = vim.api.nvim_create_user_command
-
 ---@param desc string
 local augroup = function(desc)
     return vim.api.nvim_create_augroup('user/' .. desc, { clear = true })
 end
-
-user('ToggleWrap', function()
-    vim.wo.wrap = not vim.wo.wrap
-    vim.notify('Wrap ' .. (vim.wo.wrap and 'enabled' or 'disabled'), vim.log.levels.INFO)
-end, { desc = 'Toggle wrap in current buffer', nargs = 0 })
 
 -- source: unknown
 auto('BufHidden', {
@@ -66,7 +59,7 @@ auto('TextYankPost', {
     end,
 })
 
---- User custom keymap ---
+--- User keymap ---
 for _, v in ipairs {
     { { 'n', 'v' }, ' ', '<nop>', { silent = true } },
 

@@ -1,3 +1,5 @@
+vim.pack.add({ 'https://github.com/nvim-treesitter/nvim-treesitter' }, { confirm = false })
+
 require('nvim-treesitter.configs').setup {
     ensure_installed = vimrc.parsers,
 
@@ -18,3 +20,19 @@ require('nvim-treesitter.configs').setup {
 
     indent = { enable = true, disable = { 'yaml' } },
 }
+
+vim.api.nvim_create_autocmd('PackChanged', {
+    group = vim.api.nvim_create_augroup('user/nvim-treesitter-pack-changed-update-handler', { clear = true }),
+    callback = function(e)
+        if e.data.kind == 'update' then
+            vim.notify('nvim-treesitter updated, running TSUpdate...', vim.log.levels.INFO)
+            ---@diagnostic disable-next-line: param-type-mismatch
+            local ok = pcall(vim.cmd, 'TSUpdate')
+            if ok then
+                vim.notify('TSUpdate completed!', vim.log.levels.INFO)
+            else
+                vim.notify('TSUpdate not found or failed, skipping update!', vim.log.levels.INFO)
+            end
+        end
+    end,
+})

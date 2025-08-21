@@ -1,17 +1,6 @@
 require('nvport').setup {
     theme = 'habamax',
-    packs = {
-        'https://github.com/neovim/nvim-lspconfig',
-        'https://github.com/nvim-treesitter/nvim-treesitter',
-        'https://github.com/stevearc/conform.nvim',
-        'https://github.com/ibhagwan/fzf-lua',
-        'https://github.com/nvim-lua/plenary.nvim',
-        'https://github.com/mikavilpas/yazi.nvim',
-        'https://github.com/NMAC427/guess-indent.nvim',
-    },
-    servers = {
-        'lua_ls',
-    },
+
     parsers = {
         'bash',
         'lua',
@@ -26,5 +15,19 @@ require('nvport').setup {
         'query',
         'regex',
         'json',
+    },
+
+    servers = {
+        'lua_ls',
+    },
+
+    fmt_sources = {
+        lua = { 'stylua' },
+        nix = { 'alejandra' },
+        python = { 'dprint', 'isort', 'black', stop_after_first = true },
+        markdown = { 'dprint' },
+        html = { 'dprint' },
+        css = { 'dprint' },
+        javascript = { 'dprint' },
     },
 }

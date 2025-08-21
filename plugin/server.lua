@@ -47,7 +47,7 @@ local on_attach = function(client, bufnr)
         })
     end
 
-    -- Features: Adding inlay-hints command if supported (remember to enable feature in server config)
+    -- Features: Adding inlay-hints if supported (remember to enable feature in server config)
     -- source: https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/commands.lua#L6C1-L12C49
     if client:supports_method(methods.textDocument_inlayHint, bufnr) then
         vim.api.nvim_create_user_command('ToggleInlayHints', function()
@@ -63,29 +63,7 @@ end
 -- See :help vim.diagnostic.Opts for more details
 vim.diagnostic.config {
     severity_sort = true,
-    float = { border = 'rounded', source = 'if_many' },
-    underline = { severity = vim.diagnostic.severity.ERROR },
-    signs = vim.g.have_nerd_font and {
-        text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚 ',
-            [vim.diagnostic.severity.WARN] = '󰀪 ',
-            [vim.diagnostic.severity.INFO] = '󰋽 ',
-            [vim.diagnostic.severity.HINT] = '󰌶 ',
-        },
-    } or {},
-    virtual_text = {
-        source = 'if_many',
-        spacing = 2,
-        format = function(diagnostic)
-            local diagnostic_message = {
-                [vim.diagnostic.severity.ERROR] = diagnostic.message,
-                [vim.diagnostic.severity.WARN] = diagnostic.message,
-                [vim.diagnostic.severity.INFO] = diagnostic.message,
-                [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-        end,
-    },
+    float = { border = 'none', source = 'if_many' },
 }
 
 -- Update features when registering dynamic capabilities
@@ -114,10 +92,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Enable support servers in pre-defined server list
--- local servers = vim.iter(vim.api.nvim_get_runtime_file('lsp/*.lua', true))
---     :map(function(file)
---         return vim.fn.fnamemodify(file, ':t:r')
---     end)
---     :totable()
-
+vim.pack.add({ 'https://github.com/neovim/nvim-lspconfig' }, { confirm = false })
 vim.lsp.enable(vimrc.servers)
