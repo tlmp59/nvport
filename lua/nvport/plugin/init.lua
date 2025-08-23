@@ -111,3 +111,6 @@ for _, v in ipairs {
 } do
     vim.keymap.set(v[1], v[2], v[3], v[4] or {})
 end
+
+--- External plugins ---
+require('nvport').collect 'nvport.plugin'

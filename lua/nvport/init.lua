@@ -9,8 +9,6 @@ M.setup = function(opts)
     g.mapleader = ' '
     g.maplocalleader = '\\'
     g.have_nerd_font = true
-
-    --- Theme cache ---
     g.theme_cache = vim.fn.stdpath 'cache' .. '/theme/'
 
     --- Backup ---
@@ -114,85 +112,43 @@ M.setup = function(opts)
 
     --- Set default colorshceme ---
     vim.cmd.colorscheme(vimrc.theme)
+
+    --- Inject plugins into nvim ---
+    require 'nvport.plugin'
 end
 
-local cache = vim.g.theme_cache
+---@param luapath string
+M.collect = function(luapath)
+    local path = 'lua/' .. luapath:gsub('[.]', '/') .. '/*.lua'
+    local stat, plugins = pcall(vim.api.nvim_get_runtime_file, path, true)
+    assert(stat, 'Path invalid or not exist:' .. luapath)
 
----@param tbl table[table] Highlight table
-local tblToStr = function(tbl)
-    local result = ''
-
-    for hlgroupName, v in pairs(tbl) do
-        local hlname = "'" .. hlgroupName .. "',"
-        local hlopts = ''
-
-        for optName, optVal in pairs(v) do
-            local valueInStr = ((type(optVal)) == 'boolean' or type(optVal) == 'number') and tostring(optVal)
-                or '"' .. optVal .. '"'
-            hlopts = hlopts .. optName .. '=' .. valueInStr .. ','
+    local failed = {}
+    vim.iter(plugins):each(function(p)
+        local name = vim.fn.fnamemodify(p, ':t:r')
+        if name ~= 'init' then
+            local ok, rt = pcall(require, luapath .. '.' .. name)
+            if not ok then
+                table.insert(failed, name)
+            end
         end
+    end)
 
-        result = result .. 'vim.api.nvim_set_hl(0,' .. hlname .. '{' .. hlopts .. '})\n'
-    end
+    if not vim.tbl_isempty(failed) then
+        --stylua: ignore
+        local msg = string.format(
+            "Unable to load these files under '%s': %s",
+            luapath,
+            table.concat(failed, ', ')
+        )
 
-    return result
-
-    -- Expected output: convert highlight table into executable string
-    -- { Normal = {fg = "...", bg = "..."} }
-    -- into "vim.api.nvim_set_hl(0,'Normal',{fg="...",bg="...",})"
-end
-
----@param filename string
----@param str string
-local strToCache = function(filename, str)
-    local lines = 'return string.dump(function()' .. str .. 'end, true)'
-    local file, err = io.open(cache .. filename, 'wb')
-
-    if not file or err then
-        vim.notify('Error writing ' .. file .. ':\n' .. err, vim.log.levels.ERROR)
-        return
-    end
-
-    file:write(loadstring(lines)())
-    file:close()
-
-    -- Expected output: compile highlight commands into bytecode using `string.dump`
-end
-
-local compile = function(groups)
-    if not vim.uv.fs_stat(cache) then
-        vim.fn.mkdir(cache, 'p')
-    end
-
-    strToCache(vimrc.theme.name, tblToStr(groups))
-end
-
----@param groups table[table] Highlight table
-local fallback = function(groups)
-    for k, opts in pairs(groups) do
-        vim.api.nvim_set_hl(0, k, opts)
+        vim.notify(msg, vim.log.levels.WARN)
     end
 end
 
----@param scheme table[table] colorscheme with base0X to base1X
-M.create = function(scheme)
-    local file = cache .. vimrc.theme.name
-    local exist, load = pcall(require, 'theme')
-
-    if not exist then
-        vim.notify("Directory 'theme/group' not found ...", vim.log.levels.WARN)
-        return
-    end
-
-    local groups = load(scheme)
-    compile(groups)
-
-    local ok, _ = pcall(dofile, file)
-
-    if not ok then
-        vim.notify('Unable to load cache. Falling back to manual load ...', vim.log.levels.WARN)
-        fallback(groups)
-    end
+M.flavour = function()
+    local file = vim.g.theme_cache .. vimrc.theme.name
+    local theme = require 'nvport.theme'
 end
 
 return M

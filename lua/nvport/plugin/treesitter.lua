@@ -2,6 +2,7 @@ vim.pack.add({ 'https://github.com/nvim-treesitter/nvim-treesitter' }, { confirm
 
 require('nvim-treesitter.configs').setup {
     ensure_installed = vimrc.parsers,
+    auto_install = false,
 
     highlight = {
         enable = true,

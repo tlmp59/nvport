@@ -1,4 +1,10 @@
-vim.pack.add { 'https://github.com/echasnovski/mini.icons' }
+vim.pack.add {
+    'https://github.com/echasnovski/mini.icons',
+    'https://github.com/magicduck/grug-far.nvim',
+}
+
+require('mini.icons').setup()
+require('grug-far').setup()
 
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufReadPre' }, {
     once = true,

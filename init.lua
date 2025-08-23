@@ -1,5 +1,5 @@
 require('nvport').setup {
-    theme = 'habamax',
+    theme = 'default',
 
     parsers = {
         'bash',
